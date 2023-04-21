@@ -34,9 +34,12 @@ int main() {
         return 1;
     }
 
-
+#ifdef _DEBUG
     // Create a window with dimensions 640x480
-    sf::RenderWindow window(sf::VideoMode(640, 480), "SFML Hello World");
+    sf::RenderWindow window(sf::VideoMode(1920, 1080), "SFML Hello World");
+#else
+    sf::RenderWindow window(sf::VideoMode::getFullscreenModes()[0], "Fullscreen Window", sf::Style::Fullscreen);
+#endif
 
     // Run the game loop
     while (window.isOpen()) {
@@ -46,13 +49,18 @@ int main() {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
+
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
+            {
+                window.close();
+            }
         }
 
         // Clear the window
         window.clear(sf::Color::Black);
 
         // Draw a message to the window
-        sf::Text text("Hello, SFML!", font, 48);
+        sf::Text text("\tHello, SFML!\nPress ENTER or ESC to continue...", font, 48);
         window.draw(text);
 
         // Display the window
